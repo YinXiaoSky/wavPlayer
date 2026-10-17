@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+    paths-ignore:
+      - '**/*.md'
+      - '.github/**'
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  compile:
+    name: 编译（${{ matrix.os }}）
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+
+    env:
+      DOTNET_NOLOGO: '1'
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: 缓存 NuGet 包
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj', '**/Directory.Packages.props') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
+
+      - name: 还原依赖
+        run: dotnet restore wavPlayer.slnx
+
+      - name: 编译
+        run: dotnet build wavPlayer.slnx -c Release --no-restore
+
+      - name: 上传 Windows 构建产物
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ github.run_number }}
+          path: wavPlayer.App/bin/Release/net10.0/
+          if-no-files-found: warn
+          retention-days: 5

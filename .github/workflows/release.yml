@@ -1,0 +1,78 @@
+name: Publish
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 版本号（不含 v 前缀，例如 0.1.0）
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: 打包并发布
+    runs-on: windows-latest
+
+    env:
+      DOTNET_NOLOGO: '1'
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 安装 .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: 计算版本与标签
+        id: meta
+        shell: pwsh
+        run: |
+          if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
+            $version = '${{ inputs.version }}'.TrimStart('v')
+          } else {
+            $version = '${{ github.ref_name }}'.TrimStart('v')
+          }
+          "version=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "tag=v$version"     | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
+      - name: 发布单文件程序
+        run: >
+          dotnet publish wavPlayer.App/wavPlayer.App.csproj
+          -c Release
+          -r win-x64
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:DebugType=None
+          -p:DebugSymbols=false
+          -p:Version=${{ steps.meta.outputs.version }}
+          -o dist
+
+      - name: 压缩产物
+        shell: pwsh
+        run: |
+          $zip = "wavPlayer-${{ steps.meta.outputs.version }}-win-x64.zip"
+          Compress-Archive -Path dist/* -DestinationPath $zip -Force
+          "zip=$zip" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+        id: pack
+
+      - name: 创建 Release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ steps.meta.outputs.tag }}" `
+            "${{ steps.pack.outputs.zip }}" `
+            --title "wavPlayer ${{ steps.meta.outputs.version }}" `
+            --generate-notes `
+            --draft

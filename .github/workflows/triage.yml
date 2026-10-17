@@ -1,0 +1,36 @@
+name: 陈旧 Issue 整理
+
+on:
+  schedule:
+    - cron: '15 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 标记并关闭长期无响应的条目
+        uses: actions/stale@v9
+        with:
+          days-before-issue-stale: 21
+          days-before-issue-close: 5
+          days-before-pr-stale: 30
+          days-before-pr-close: 7
+          only-issue-labels: needs-info
+          stale-issue-label: stale
+          stale-pr-label: stale
+          exempt-issue-labels: pinned,security
+          stale-issue-message: |
+            这条 issue 已经 21 天没有新回复了。如果问题仍然存在或仍有信息需要补充，请直接在本帖回复；否则它会在 5 天后被关闭。
+            关闭后随时可以重新开启。
+          close-issue-message: |
+            由于长时间没有响应，这条 issue 已自动关闭。如果之后还有同类问题，欢迎带上新的复现信息重新提交。
+          stale-pr-message: |
+            这个 PR 已经 30 天没有动静了，先标记为陈旧。如果仍在推进，回复任意内容即可解除；否则 7 天后关闭。
+          close-pr-message: |
+            该 PR 因长时间无进展被关闭，后续可随时重新开启。
+          repo-token: ${{ secrets.GITHUB_TOKEN }}

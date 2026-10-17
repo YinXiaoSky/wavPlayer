@@ -1,0 +1,93 @@
+name: 缺陷报告
+description: 报告 wavPlayer 在播放、加载文件、界面交互或启动过程中出现的异常行为。
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。请尽量按表单填写，信息不足的问题可能会被要求补充后再处理。
+
+        > 一个 issue 只报告一个问题；多个问题请分别提交。
+  - type: dropdown
+    id: module
+    attributes:
+      label: 受影响的模块
+      description: 选择最接近问题发生的位置，便于分流。
+      options:
+        - 播放与音频输出
+        - 文件加载与格式解析
+        - 界面与交互
+        - 启动与退出
+        - 播放列表 / 媒体库
+        - 其他
+    validations:
+      required: true
+  - type: input
+    id: app-version
+    attributes:
+      label: 程序版本
+      description: 版本号可在「关于」页或发布包名中看到。
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: 运行环境
+      options:
+        - Windows 11
+        - Windows 10
+        - Linux
+        - macOS
+        - 其他
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: 问题描述
+      description: 请按「做了什么 / 实际发生了什么 / 期望是什么」三段来说明。
+      placeholder: |
+        操作：
+        实际：
+        期望：
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: 复现步骤
+      description: 从启动程序开始写下具体操作，能稳定复现最好。
+      placeholder: |
+        1. 打开……
+        2. 拖动/点击……
+        3. 此时出现……
+    validations:
+      required: true
+  - type: textarea
+    id: audio-profile
+    attributes:
+      label: 涉及音频文件的特征（可选）
+      description: 若问题只在特定文件出现，请写明容器格式、编码、采样率、位深、声道数、文件大小，以及是否能被其他播放器正常播放。
+      placeholder: |
+        容器/编码：WAV / PCM
+        采样率：44100 Hz
+        位深：16 bit
+        声道：2
+        文件大小：12 MB
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 日志与截图（可选）
+      description: 控制台输出、异常堆栈、错误提示或界面截图都可以直接粘贴。
+      render: shell
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我使用的是当前最新版本，并且已在 Issues 中搜索过，没有发现重复报告。
+          required: true
+        - label: 我理解这里只处理程序本身的问题。
+          required: true
