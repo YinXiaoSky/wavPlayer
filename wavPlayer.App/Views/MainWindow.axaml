@@ -1,0 +1,31 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:wavPlayer.ViewModels"
+        xmlns:ui="using:FluentAvalonia.UI.Controls"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="wavPlayer.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="wavPlayer">
+
+    <Design.DataContext>
+        <vm:MainViewModel />
+    </Design.DataContext>
+
+    <ui:NavigationView x:Name="NavigationView" 
+                       PaneDisplayMode="Left"
+                       MenuItemsSource="{Binding NavigationItems}"
+                       SelectedItem="{Binding SelectedNavigationItem, Mode=TwoWay}"
+                       Content="{Binding CurrentPage}">
+        <ui:NavigationView.MenuItemTemplate>
+            <DataTemplate>
+                <ui:NavigationViewItem Content="{Binding Title}"
+                                       Tag="{Binding Tag}"
+                                       IconSource="{Binding Icon}" />
+            </DataTemplate>
+        </ui:NavigationView.MenuItemTemplate>
+    </ui:NavigationView>
+
+</Window>
