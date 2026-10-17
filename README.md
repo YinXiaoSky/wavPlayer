@@ -10,6 +10,7 @@
 # wavPlayer
 
 一款基于 C# 的 Windows 平台下的音频频谱/波形显示器。
+
 ![GitHub Release](https://img.shields.io/github/v/release/YinXiaoSky/wavPlayer?style=for-the-badge)
 ![GitHub All Releases](https://img.shields.io/github/downloads/YinXiaoSky/wavPlayer/total?style=for-the-badge)
 ![Star](https://img.shields.io/github/stars/YinXiaoSky/wavPlayer?style=for-the-badge)
