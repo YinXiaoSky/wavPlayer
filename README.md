@@ -68,6 +68,7 @@
 - [Microsoft.IO.RecyclableMemoryStream](https://www.nuget.org/packages/Microsoft.IO.RecyclableMemoryStream)
 - [Microsoft.Extensions.Logging.Abstractions](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Abstractions)
 - [.NET](https://dotnet.microsoft.com/download)
+- [Lucide](https://lucide.dev/)（软件图标）
 
 部分代码参考了 [ClassIsland](https://github.com/ClassIsland/ClassIsland) ，使用的同样是GPL V3.0协议
 
