@@ -36,7 +36,7 @@
 
 ## 下载？去看本文件顶部！
 
-使用请在安装完[.NET 10 Runtime](https://dotnet.microsoft.com/zh-cn/download/dotnet/thank-you/runtime-desktop-10.0.13-windows-x64-installer)后自行下载源代码构建或在[GitHub Actions页面](https://github.com/YinXiaoSky/wavPlayer/actions)下载最新构建。
+使用请在安装完[.NET 10 Runtime](https://dotnet.microsoft.com/zh-cn/download/dotnet/thank-you/runtime-desktop-10.0.13-windows-x64-installer)后自行下载源代码构建（需要[.NET 10 SDK](https://dotnet.microsoft.com/zh-cn/download/dotnet/thank-you/sdk-10.0.402-windows-x64-installer)）或在[GitHub Actions页面](https://github.com/YinXiaoSky/wavPlayer/actions)下载最新构建。
 
 ~~不是叫你看README顶部吗？~~
 
